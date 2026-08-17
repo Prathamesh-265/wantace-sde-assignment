@@ -1,0 +1,38 @@
+// Prisma schema for the roofing estimator.
+// Two tables: Config (the one row that drives the whole public form)
+// and Lead (every estimate a homeowner submits).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Config {
+  id             String   @id @default(cuid())
+  configVersion  Int      @default(1) @map("config_version")
+  business       Json     // { name, region, currency }
+  questions      Json     // array of question objects, see DECISIONS.md for shape
+  modifiers      Json     // { waste_factor, permit_flat_fee, range_spread_pct }
+  isActive       Boolean  @default(true) @map("is_active")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@map("configs")
+}
+
+model Lead {
+  id            String   @id @default(cuid())
+  name          String
+  phone         String
+  email         String
+  answers       Json
+  estimateLow   Int      @map("estimate_low")
+  estimateHigh  Int      @map("estimate_high")
+  configVersion Int      @map("config_version")
+  capturedAt    DateTime @default(now()) @map("captured_at")
+
+  @@map("leads")
+}
