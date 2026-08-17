@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-canvas text-slate-900 font-body antialiased;
+}
+
+h1, h2, h3, h4 {
+  @apply font-display;
+}
+
+/* Visible focus rings everywhere, keyboard nav shouldn't be an afterthought */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+label:focus-visible {
+  outline: 2px solid #c1622d;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* The signature motif: a single angled "roof pitch" divider, standing in
+   for the generic flat hairline rule you'd normally reach for. Used
+   sparingly — once per surface — as a section break. */
+.pitch-divider {
+  height: 14px;
+  width: 100%;
+  background: linear-gradient(115deg, transparent 49.3%, #c1622d 49.3%, #c1622d 50.7%, transparent 50.7%);
+  opacity: 0.45;
+}
