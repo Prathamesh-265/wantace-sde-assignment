@@ -2,7 +2,7 @@ import React from 'react';
 
 // Renders a `type: "select"` question. Options — including their labels —
 // come entirely from the config the server returned; nothing here is
-// aware of "asphalt shingle" or any specific option beforehand.
+
 export default function SelectQuestion({ question, value, onChange, error }) {
   return (
     <fieldset className="animate-riseIn">

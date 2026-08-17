@@ -1,7 +1,4 @@
-// The pricing engine. This is the one piece of code that must never run
-// in the browser — it's the entire reason the estimate is calculated
-// server-side instead of client-side.
-//
+
 // Formula (documented in full in DECISIONS.md):
 //   base material cost = roof_area * rate_per_sqft * (1 + waste_factor)
 //   tear-off cost       = roof_area * tear_off_per_sqft
@@ -31,13 +28,14 @@ export function calculateEstimate(config, answers) {
   const tearOffPerSqft = Number(layersOpt?.tear_off_per_sqft ?? 0);
   const storiesMultiplier = Number(storiesOpt?.multiplier ?? 1);
 
-  const wasteFactor = Number(modifiers.waste_factor ?? 0.10);
+  const wasteFactor = Number(modifiers.waste_factor ?? 0.1);
   const permitFlatFee = Number(modifiers.permit_flat_fee ?? 350);
   const spreadPct = Number(modifiers.range_spread_pct ?? 12) / 100;
 
   const baseMaterialCost = roofArea * ratePerSqft * (1 + wasteFactor);
   const tearOffCost = roofArea * tearOffPerSqft;
-  const subtotal = (baseMaterialCost + tearOffCost) * pitchMultiplier * storiesMultiplier;
+  const subtotal =
+    (baseMaterialCost + tearOffCost) * pitchMultiplier * storiesMultiplier;
   const midEstimate = subtotal + permitFlatFee;
 
   const estimateLow = Math.round(midEstimate * (1 - spreadPct));

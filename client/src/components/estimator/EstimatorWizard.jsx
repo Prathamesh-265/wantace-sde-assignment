@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { api } from '../../services/api.js';
-import NumberQuestion from '../dynamic/NumberQuestion.jsx';
-import SelectQuestion from '../dynamic/SelectQuestion.jsx';
-import ProgressBar from './ProgressBar.jsx';
-import ContactStep from './ContactStep.jsx';
-import ResultCard from './ResultCard.jsx';
-import Spinner from '../ui/Spinner.jsx';
-import Button from '../ui/Button.jsx';
+import React, { useEffect, useState } from "react";
+import { api } from "../../services/api.js";
+import NumberQuestion from "../dynamic/NumberQuestion.jsx";
+import SelectQuestion from "../dynamic/SelectQuestion.jsx";
+import ProgressBar from "./ProgressBar.jsx";
+import ContactStep from "./ContactStep.jsx";
+import ResultCard from "./ResultCard.jsx";
+import Spinner from "../ui/Spinner.jsx";
+import Button from "../ui/Button.jsx";
 
 const QUESTION_COMPONENTS = {
   number: NumberQuestion,
@@ -18,7 +18,7 @@ export default function EstimatorWizard() {
   const [loadError, setLoadError] = useState(null);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [contact, setContact] = useState({ name: '', phone: '', email: '' });
+  const [contact, setContact] = useState({ name: "", phone: "", email: "" });
   const [stepErrors, setStepErrors] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
@@ -39,9 +39,13 @@ export default function EstimatorWizard() {
   if (loadError) {
     return (
       <div className="mx-auto max-w-md text-center py-10">
-        <p className="text-lg font-semibold text-slate-900">We couldn't load the estimator.</p>
+        <p className="text-lg font-semibold text-slate-900">
+          We couldn't load the estimator.
+        </p>
         <p className="mt-2 text-slate-600">{loadError}</p>
-        <Button className="mt-4" onClick={loadConfig}>Try again</Button>
+        <Button className="mt-4" onClick={loadConfig}>
+          Try again
+        </Button>
       </div>
     );
   }
@@ -64,21 +68,22 @@ export default function EstimatorWizard() {
   function validateCurrentStep() {
     if (isContactStep) {
       const errs = [];
-      if (!contact.name.trim()) errs.push('name is required.');
-      if (!contact.phone.trim()) errs.push('phone is required.');
+      if (!contact.name.trim()) errs.push("name is required.");
+      if (!contact.phone.trim()) errs.push("phone is required.");
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(contact.email)) errs.push('a valid email is required.');
+      if (!emailPattern.test(contact.email))
+        errs.push("a valid email is required.");
       setStepErrors(errs);
       return errs.length === 0;
     }
 
     const q = currentQuestion;
     const value = answers[q.key];
-    if (q.required && (value === undefined || value === '' || value === null)) {
+    if (q.required && (value === undefined || value === "" || value === null)) {
       setStepErrors([`${q.label} is required.`]);
       return false;
     }
-    if (q.type === 'number' && value !== undefined && value !== '') {
+    if (q.type === "number" && value !== undefined && value !== "") {
       const numeric = Number(value);
       if (q.min !== undefined && numeric < q.min) {
         setStepErrors([`Must be at least ${q.min}.`]);
@@ -115,7 +120,7 @@ export default function EstimatorWizard() {
       const data = await api.submitEstimate(payload);
       setResult(data);
     } catch (err) {
-      setSubmitError(err.details?.join(' ') || err.message);
+      setSubmitError(err.details?.join(" ") || err.message);
     } finally {
       setSubmitting(false);
     }
@@ -123,7 +128,7 @@ export default function EstimatorWizard() {
 
   function startOver() {
     setAnswers({});
-    setContact({ name: '', phone: '', email: '' });
+    setContact({ name: "", phone: "", email: "" });
     setStep(0);
     setResult(null);
     setSubmitError(null);
@@ -138,7 +143,9 @@ export default function EstimatorWizard() {
     );
   }
 
-  const FieldComponent = currentQuestion ? QUESTION_COMPONENTS[currentQuestion.type] : null;
+  const FieldComponent = currentQuestion
+    ? QUESTION_COMPONENTS[currentQuestion.type]
+    : null;
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
@@ -146,7 +153,11 @@ export default function EstimatorWizard() {
 
       <div className="min-h-[180px]">
         {isContactStep ? (
-          <ContactStep contact={contact} onChange={handleContactChange} errors={stepErrors} />
+          <ContactStep
+            contact={contact}
+            onChange={handleContactChange}
+            errors={stepErrors}
+          />
         ) : (
           FieldComponent && (
             <FieldComponent
@@ -160,15 +171,25 @@ export default function EstimatorWizard() {
       </div>
 
       {submitError && (
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{submitError}</p>
+        <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">
+          {submitError}
+        </p>
       )}
 
       <div className="mt-5 flex items-center justify-between">
-        <Button variant="ghost" onClick={goBack} disabled={step === 0 || submitting}>
+        <Button
+          variant="ghost"
+          onClick={goBack}
+          disabled={step === 0 || submitting}
+        >
           Back
         </Button>
         <Button onClick={goNext} disabled={submitting}>
-          {submitting ? 'Calculating…' : isContactStep ? 'Get my estimate' : 'Next'}
+          {submitting
+            ? "Calculating…"
+            : isContactStep
+              ? "Get my estimate"
+              : "Next"}
         </Button>
       </div>
     </div>

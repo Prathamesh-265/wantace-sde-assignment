@@ -1,10 +1,10 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext.jsx';
-import EstimatorPage from './pages/EstimatorPage.jsx';
-import AdminLoginPage from './pages/AdminLoginPage.jsx';
-import AdminDashboardPage from './pages/AdminDashboardPage.jsx';
-import Spinner from './components/ui/Spinner.jsx';
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
+import EstimatorPage from "./pages/EstimatorPage.jsx";
+import AdminLoginPage from "./pages/AdminLoginPage.jsx";
+import AdminDashboardPage from "./pages/AdminDashboardPage.jsx";
+import Spinner from "./components/ui/Spinner.jsx";
 
 function RequireOwner({ children }) {
   const { owner, checking } = useAuth();

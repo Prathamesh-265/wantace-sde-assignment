@@ -1,5 +1,5 @@
-import React from 'react';
-import EstimatorWizard from '../components/estimator/EstimatorWizard.jsx';
+import React from "react";
+import EstimatorWizard from "../components/estimator/EstimatorWizard.jsx";
 
 export default function EstimatorPage() {
   return (

@@ -3,9 +3,9 @@
 // the CURRENT active config (never trusts anything the client computed),
 // calculates the range server-side, and stores the lead.
 
-import { prisma } from '../config/db.js';
-import { calculateEstimate } from '../services/calculator.js';
-import { validateAnswers, validateContact } from '../utils/validate.js';
+import { prisma } from "../config/db.js";
+import { calculateEstimate } from "../services/calculator.js";
+import { validateAnswers, validateContact } from "../utils/validate.js";
 
 export async function submitEstimate(req, res, next) {
   try {
@@ -13,11 +13,11 @@ export async function submitEstimate(req, res, next) {
 
     const config = await prisma.config.findFirst({
       where: { isActive: true },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     if (!config) {
-      return res.status(404).json({ error: 'No active configuration found.' });
+      return res.status(404).json({ error: "No active configuration found." });
     }
 
     const contactErrors = validateContact({ name, phone, email });
@@ -25,7 +25,9 @@ export async function submitEstimate(req, res, next) {
     const allErrors = [...contactErrors, ...answerErrors];
 
     if (allErrors.length > 0) {
-      return res.status(400).json({ error: 'Validation failed.', details: allErrors });
+      return res
+        .status(400)
+        .json({ error: "Validation failed.", details: allErrors });
     }
 
     const { estimateLow, estimateHigh } = calculateEstimate(config, answers);
@@ -46,7 +48,7 @@ export async function submitEstimate(req, res, next) {
       lead_id: lead.id,
       estimate_low: estimateLow,
       estimate_high: estimateHigh,
-      currency: config.business?.currency || 'USD',
+      currency: config.business?.currency || "USD",
     });
   } catch (err) {
     next(err);

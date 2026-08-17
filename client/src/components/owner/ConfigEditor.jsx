@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { api } from '../../services/api.js';
-import QuestionEditRow from './QuestionEditRow.jsx';
-import Button from '../ui/Button.jsx';
-import Spinner from '../ui/Spinner.jsx';
+import React, { useEffect, useState } from "react";
+import { api } from "../../services/api.js";
+import QuestionEditRow from "./QuestionEditRow.jsx";
+import Button from "../ui/Button.jsx";
+import Spinner from "../ui/Spinner.jsx";
 
 export default function ConfigEditor({ onSaved }) {
   const [config, setConfig] = useState(null);
@@ -37,7 +37,7 @@ export default function ConfigEditor({ onSaved }) {
     updateQuestion(key, (q) => ({
       ...q,
       options: q.options.map((opt) =>
-        opt.value === optionValue ? { ...opt, [field]: Number(rawValue) } : opt
+        opt.value === optionValue ? { ...opt, [field]: Number(rawValue) } : opt,
       ),
     }));
   }
@@ -61,7 +61,7 @@ export default function ConfigEditor({ onSaved }) {
       setConfig(updated);
       onSaved?.(updated.config_version);
     } catch (err) {
-      setError(err.details?.join(' ') || err.message);
+      setError(err.details?.join(" ") || err.message);
     } finally {
       setSaving(false);
     }
@@ -75,8 +75,8 @@ export default function ConfigEditor({ onSaved }) {
       <div>
         <h2 className="text-2xl font-bold text-slate-900">Questions & rates</h2>
         <p className="mt-1 text-slate-600">
-          Edit labels, adjust rates, or switch a question off. Changes go live the moment you save —
-          the estimator keeps working while you edit.
+          Edit labels, adjust rates, or switch a question off. Changes go live
+          the moment you save — the estimator keeps working while you edit.
         </p>
       </div>
 
@@ -93,48 +93,68 @@ export default function ConfigEditor({ onSaved }) {
       </div>
 
       <div className="rounded-xl border border-slate-200 bg-white p-4">
-        <h3 className="mb-4 text-lg font-bold text-slate-900">Global settings</h3>
+        <h3 className="mb-4 text-lg font-bold text-slate-900">
+          Global settings
+        </h3>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div>
-            <label className="mb-1 block text-xs text-slate-500">Waste factor (e.g. 0.10 = 10%)</label>
+            <label className="mb-1 block text-xs text-slate-500">
+              Waste factor (e.g. 0.10 = 10%)
+            </label>
             <input
               type="number"
               step="0.01"
               value={config.modifiers.waste_factor}
-              onChange={(e) => handleModifierChange('waste_factor', e.target.value)}
+              onChange={(e) =>
+                handleModifierChange("waste_factor", e.target.value)
+              }
               className="w-full rounded-lg border-2 border-slate-200 px-3 py-2 focus:outline-none focus:border-copper-500"
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-slate-500">Permit fee ($)</label>
+            <label className="mb-1 block text-xs text-slate-500">
+              Permit fee ($)
+            </label>
             <input
               type="number"
               step="1"
               value={config.modifiers.permit_flat_fee}
-              onChange={(e) => handleModifierChange('permit_flat_fee', e.target.value)}
+              onChange={(e) =>
+                handleModifierChange("permit_flat_fee", e.target.value)
+              }
               className="w-full rounded-lg border-2 border-slate-200 px-3 py-2 focus:outline-none focus:border-copper-500"
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-slate-500">Range spread (%)</label>
+            <label className="mb-1 block text-xs text-slate-500">
+              Range spread (%)
+            </label>
             <input
               type="number"
               step="1"
               value={config.modifiers.range_spread_pct}
-              onChange={(e) => handleModifierChange('range_spread_pct', e.target.value)}
+              onChange={(e) =>
+                handleModifierChange("range_spread_pct", e.target.value)
+              }
               className="w-full rounded-lg border-2 border-slate-200 px-3 py-2 focus:outline-none focus:border-copper-500"
             />
           </div>
         </div>
       </div>
 
-      {error && <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">
+          {error}
+        </p>
+      )}
 
       <div className="flex items-center gap-4">
         <Button onClick={handleSave} disabled={saving}>
-          {saving ? 'Saving…' : 'Save changes'}
+          {saving ? "Saving…" : "Save changes"}
         </Button>
-        <span className="text-sm text-slate-500">Current version: v{config.config_version}</span>
+        <span className="text-sm text-slate-500">
+          Current version: v{config.config_version}
+        </span>
       </div>
     </div>
   );

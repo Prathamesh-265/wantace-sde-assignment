@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useAuth } from '../../context/AuthContext.jsx';
-import Button from '../ui/Button.jsx';
+import React, { useState } from "react";
+import { useAuth } from "../../context/AuthContext.jsx";
+import Button from "../ui/Button.jsx";
 
 export default function LoginForm({ onSuccess }) {
   const { login } = useAuth();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -24,14 +24,22 @@ export default function LoginForm({ onSuccess }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="animate-riseIn mx-auto max-w-sm space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="animate-riseIn mx-auto max-w-sm space-y-4"
+    >
       <div>
         <h1 className="text-2xl font-bold text-white">Owner panel</h1>
-        <p className="mt-1 text-slate-400">Sign in to manage rates, questions, and leads.</p>
+        <p className="mt-1 text-slate-400">
+          Sign in to manage rates, questions, and leads.
+        </p>
       </div>
 
       <div>
-        <label htmlFor="username" className="mb-2 block text-sm font-semibold text-slate-300">
+        <label
+          htmlFor="username"
+          className="mb-2 block text-sm font-semibold text-slate-300"
+        >
           Username
         </label>
         <input
@@ -45,7 +53,10 @@ export default function LoginForm({ onSuccess }) {
       </div>
 
       <div>
-        <label htmlFor="password" className="mb-2 block text-sm font-semibold text-slate-300">
+        <label
+          htmlFor="password"
+          className="mb-2 block text-sm font-semibold text-slate-300"
+        >
           Password
         </label>
         <input
@@ -59,10 +70,14 @@ export default function LoginForm({ onSuccess }) {
         />
       </div>
 
-      {error && <p className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-400">{error}</p>}
+      {error && (
+        <p className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          {error}
+        </p>
+      )}
 
       <Button type="submit" disabled={submitting} className="w-full">
-        {submitting ? 'Signing in…' : 'Sign in'}
+        {submitting ? "Signing in…" : "Sign in"}
       </Button>
     </form>
   );

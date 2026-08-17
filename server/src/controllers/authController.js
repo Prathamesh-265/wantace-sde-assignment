@@ -1,8 +1,4 @@
 // POST /api/auth/login and /api/auth/logout
-// Single hardcoded owner account, matching the brief ("basic auth is
-// fine — this is not a security exercise"). Credentials come from env
-// vars, never committed. Password is compared against a bcrypt hash so
-// it isn't sitting in plaintext even in .env.
 
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';

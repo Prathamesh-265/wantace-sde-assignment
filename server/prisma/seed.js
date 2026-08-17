@@ -5,9 +5,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Straight from the brief. Note pitch "medium" multiplier came in as a
-// string ("1.12") in the original export — normalized to a number here
-// so the calculator never has to worry about it. See DECISIONS.md.
+
 const seedConfig = {
   configVersion: 3,
   business: {

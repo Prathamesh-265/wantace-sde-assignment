@@ -9,14 +9,17 @@ export function validateAnswers(config, answers) {
   for (const question of activeQuestions) {
     const value = answers ? answers[question.key] : undefined;
 
-    if (question.required && (value === undefined || value === null || value === '')) {
+    if (
+      question.required &&
+      (value === undefined || value === null || value === "")
+    ) {
       errors.push(`${question.label} is required.`);
       continue;
     }
 
-    if (value === undefined || value === null || value === '') continue;
+    if (value === undefined || value === null || value === "") continue;
 
-    if (question.type === 'number') {
+    if (question.type === "number") {
       const numeric = Number(value);
       if (Number.isNaN(numeric)) {
         errors.push(`${question.label} must be a number.`);
@@ -30,7 +33,7 @@ export function validateAnswers(config, answers) {
       }
     }
 
-    if (question.type === 'select') {
+    if (question.type === "select") {
       const validValues = (question.options || []).map((opt) => opt.value);
       if (!validValues.includes(value)) {
         errors.push(`${question.label} has an invalid selection.`);
@@ -44,11 +47,12 @@ export function validateAnswers(config, answers) {
 export function validateContact({ name, phone, email }) {
   const errors = [];
 
-  if (!name || !name.trim()) errors.push('Name is required.');
-  if (!phone || !phone.trim()) errors.push('Phone is required.');
+  if (!name || !name.trim()) errors.push("Name is required.");
+  if (!phone || !phone.trim()) errors.push("Phone is required.");
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email || !emailPattern.test(email)) errors.push('A valid email is required.');
+  if (!email || !emailPattern.test(email))
+    errors.push("A valid email is required.");
 
   return errors;
 }

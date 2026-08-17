@@ -1,6 +1,6 @@
 // Protected owner panel endpoints: editing config and viewing leads.
 
-import { prisma } from '../config/db.js';
+import { prisma } from "../config/db.js";
 
 // GET /api/admin/config
 // Same shape as the public one but includes inactive questions too, so
@@ -9,11 +9,11 @@ export async function getFullConfig(req, res, next) {
   try {
     const config = await prisma.config.findFirst({
       where: { isActive: true },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     if (!config) {
-      return res.status(404).json({ error: 'No active configuration found.' });
+      return res.status(404).json({ error: "No active configuration found." });
     }
 
     res.json({
@@ -36,13 +36,17 @@ export async function updateConfig(req, res, next) {
   try {
     const { questions, modifiers, business } = req.body;
 
-    if (!Array.isArray(questions) || typeof modifiers !== 'object') {
-      return res.status(400).json({ error: 'questions (array) and modifiers (object) are required.' });
+    if (!Array.isArray(questions) || typeof modifiers !== "object") {
+      return res
+        .status(400)
+        .json({
+          error: "questions (array) and modifiers (object) are required.",
+        });
     }
 
     const current = await prisma.config.findFirst({
       where: { isActive: true },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     const nextVersion = (current?.configVersion || 0) + 1;
@@ -70,11 +74,60 @@ export async function updateConfig(req, res, next) {
   }
 }
 
+// GET /api/admin/leads/export
+// Streams all leads back as a CSV file for download.
+export async function exportLeadsCsv(req, res, next) {
+  try {
+    const leads = await prisma.lead.findMany({
+      orderBy: { capturedAt: "desc" },
+    });
+
+    const headers = [
+      "Name",
+      "Phone",
+      "Email",
+      "Submitted",
+      "Estimate Low",
+      "Estimate High",
+      "Config Version",
+      "Answers",
+    ];
+
+    const escapeCsv = (value) => `"${String(value).replace(/"/g, '""')}"`;
+
+    const rows = leads.map((lead) =>
+      [
+        lead.name,
+        `="${lead.phone}"`,
+        lead.email,
+        lead.capturedAt.toISOString(),
+        lead.estimateLow,
+        lead.estimateHigh,
+        lead.configVersion,
+        JSON.stringify(lead.answers),
+      ]
+        .map(escapeCsv)
+        .join(","),
+    );
+
+    const csv = [headers.map(escapeCsv).join(","), ...rows].join("\n");
+
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="leads-export.csv"',
+    );
+    res.status(200).send(csv);
+  } catch (err) {
+    next(err);
+  }
+}
+
 // GET /api/admin/leads
 export async function getLeads(req, res, next) {
   try {
     const leads = await prisma.lead.findMany({
-      orderBy: { capturedAt: 'desc' },
+      orderBy: { capturedAt: "desc" },
     });
 
     res.json(
@@ -88,7 +141,7 @@ export async function getLeads(req, res, next) {
         estimate_high: lead.estimateHigh,
         config_version: lead.configVersion,
         captured_at: lead.capturedAt,
-      }))
+      })),
     );
   } catch (err) {
     next(err);
