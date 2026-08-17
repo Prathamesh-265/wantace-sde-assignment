@@ -11,8 +11,8 @@ The project has two connected surfaces sharing one backend and one database:
 
 All pricing logic runs server-side. The frontend never sees or calculates the formula; it only renders whatever configuration the API returns.
 
-**Live estimator:** [add your Vercel URL]
-**Owner panel:** [add your Vercel URL]/admin/login
+**Live estimator:** [\[add your Vercel URL\]](https://wantace-sde-assignment.vercel.app)
+**Owner panel:** [\[add your Vercel URL\]/admin/login](https://wantace-sde-assignment.vercel.app/admin/login)
 **Test login:** username `admin`, password `admin123`
 
 ## Stack
@@ -98,6 +98,7 @@ Frontend runs at `http://localhost:5173`.
 
 ## Project Structure
 
+```
 ├── client/ # Frontend App (React/Vite)
 │ ├── src/
 │ │ ├── components/
@@ -125,3 +126,4 @@ Frontend runs at `http://localhost:5173`.
 ├── DECISIONS.md # Architectural decisions & assumptions
 ├── AI_LOG.md # AI usage log
 └── README.md
+```
